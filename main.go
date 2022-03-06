@@ -27,8 +27,10 @@ func main() {
 
 	r.GET("tokenz", auth.AccessToken)
 
+	protect := r.Group("", auth.Protect([]byte("==signature==")))
+
 	handler := todo.NewTodoHandler(db)
-	r.POST("/todos", handler.NewTask)
+	protect.POST("/todos", handler.NewTask)
 
 	r.Run()
 }
