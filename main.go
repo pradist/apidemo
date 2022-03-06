@@ -25,7 +25,13 @@ var (
 )
 
 func main() {
-	err := godotenv.Load("local.env")
+	_, err := os.Create("/tmp/live")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer os.Remove("/tmp/live")
+
+	err = godotenv.Load("local.env")
 	if err != nil {
 		log.Printf("please consider environment variables %s", err)
 	}
@@ -38,6 +44,10 @@ func main() {
 	db.AutoMigrate(&todo.Todo{})
 
 	r := gin.Default()
+	r.GET("healthz", func(c *gin.Context) {
+		c.Status(http.StatusOK)
+	})
+
 	r.GET("/x", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"buildcommit": buildcommit,
