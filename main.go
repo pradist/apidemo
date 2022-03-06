@@ -19,6 +19,11 @@ import (
 	"github.com/pradist/apidemo/todo"
 )
 
+var (
+	buildcommit = "dev"
+	buildtime   = time.Now().String()
+)
+
 func main() {
 	err := godotenv.Load("local.env")
 	if err != nil {
@@ -33,13 +38,14 @@ func main() {
 	db.AutoMigrate(&todo.Todo{})
 
 	r := gin.Default()
-	r.GET("ping", func(c *gin.Context) {
+	r.GET("/x", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"buildcommit": buildcommit,
+			"buildtime":   buildtime,
 		})
 	})
 
-	r.GET("tokenz", auth.AccessToken(os.Getenv("SIGN")))
+	r.GET("/tokenz", auth.AccessToken(os.Getenv("SIGN")))
 	protect := r.Group("", auth.Protect([]byte(os.Getenv("SIGN"))))
 
 	handler := todo.NewTodoHandler(db)

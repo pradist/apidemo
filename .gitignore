@@ -1,3 +1,4 @@
 .idea/*
+app
 local.env
 test.db
