@@ -31,8 +31,7 @@ func main() {
 	}
 	defer os.Remove("/tmp/live")
 
-	err = godotenv.Load("local.env")
-	if err != nil {
+	if err = godotenv.Load("local.env"); err != nil {
 		log.Printf("please consider environment variables %s", err)
 	}
 
@@ -41,7 +40,9 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&todo.Todo{})
+	if err := db.AutoMigrate(&todo.Todo{}); err != nil {
+		log.Println(err)
+	}
 
 	r := gin.Default()
 	r.GET("healthz", func(c *gin.Context) {
