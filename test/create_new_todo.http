@@ -13,5 +13,5 @@ Authorization: Bearer {{token}}
 TransactionID: x123
 
 {
-    "text": "sleep"
+    "text": "test"
 }

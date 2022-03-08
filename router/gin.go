@@ -37,3 +37,16 @@ func NewGinHandler(handler func(todo.Context)) gin.HandlerFunc {
 		handler(NewMyContext(c))
 	}
 }
+
+type MyRouter struct {
+	*gin.Engine
+}
+
+func NewMyRouter() *MyRouter {
+	r := gin.Default()
+	return &MyRouter{r}
+}
+
+func (r *MyRouter) POST(path string, handler func(todo.Context)) {
+	r.Engine.POST(path, NewGinHandler(handler))
+}

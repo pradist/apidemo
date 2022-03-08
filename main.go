@@ -46,7 +46,7 @@ func main() {
 		log.Println(err)
 	}
 
-	r := gin.Default()
+	r := router.NewMyRouter()
 	r.GET("healthz", func(c *gin.Context) {
 		c.Status(http.StatusOK)
 	})
