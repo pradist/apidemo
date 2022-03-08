@@ -1,3 +1,5 @@
+COVER_PROFILE ?= coverage.out
+
 build:
 	go build \
 		-ldflags "-X main.buildcommit=`git rev-parse --short HEAD` \
@@ -14,3 +16,6 @@ image:
 container:
 	docker run -p 8081:8081 --env-file ./local.env --link some-mariadb:db \
 	--name myapp todo:test
+
+test-cover:
+	go test -v -coverprofile=${COVER_PROFILE} ./...
