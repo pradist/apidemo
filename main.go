@@ -16,6 +16,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/pradist/apidemo/auth"
+	"github.com/pradist/apidemo/router"
 	"github.com/pradist/apidemo/store"
 	"github.com/pradist/apidemo/todo"
 )
@@ -63,7 +64,7 @@ func main() {
 	gormStore := store.NewGromStore(db)
 
 	handler := todo.NewTodoHandler(gormStore)
-	protect.POST("/todos", todo.ConvertToGinHandler(handler.NewTask))
+	protect.POST("/todos", router.NewGinHandler(handler.NewTask))
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
