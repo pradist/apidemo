@@ -51,9 +51,9 @@ func (t *TodoHandler) NewTask(c Context) {
 		transactionID := c.TransactionID()
 		// aud, _ := c.Get("aud")
 		aud := c.Audience()
-		log.Println(transactionID, aud, "not allow")
+		log.Println(transactionID, aud, "not allowed")
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"error": "not allow",
+			"error": "not allowed",
 		})
 		return
 	}
